@@ -15,7 +15,7 @@ This blog, **`lab`**, is where I publish **small hobby research projects and exp
 
 Think of it as a public lab notebook: Just curiosity, code, and occasional dead ends.  
 
-Everything here is **work in progress** — feedback, corrections, and reading recommendations welcome!
+Everything here is **work in progress**. Feedback, corrections, and reading recommendations are welcome!
 
 —  
-Find me on [GitHub](https://github.com/lilysli) or LinkedIn `https://www.linkedin.com/in/lily-sijia-li/`.
+Find me on [GitHub](https://github.com/lilysli) or [LinkedIn] (https://www.linkedin.com/in/lily-sijia-li/).
