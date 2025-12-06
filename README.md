@@ -19,4 +19,4 @@ Think of it as a public lab notebook: Just curiosity, code, and occasional dead 
 Everything here is **work in progress**. Feedback, corrections, and reading recommendations are welcome!
 
 —  
-Find me on [GitHub](https://github.com/lilysli) or [LinkedIn] (https://www.linkedin.com/in/lily-sijia-li/).
+Find me on [GitHub](https://github.com/lilysli) or [LinkedIn](https://www.linkedin.com/in/lily-sijia-li/).
