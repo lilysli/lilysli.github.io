@@ -3,7 +3,7 @@ author: "Lily Sijia Li"
 description: "lab — small experiments, documented"
 permalink: /:title/
 lang: "en"
-excerpt_separator: "\n\n\n"
+excerpt_separator: "\n"
 date_format: "%B %d, %Y"
 
 # Layout
