@@ -3,29 +3,27 @@ title: "Building a tool to scan the lab for malicious AI artifacts"
 layout: post
 ---
 
-**The problem as an AI hobbyist, is that you might end up downloading malicious AI artifacts.** I’ve downloaded models, Python scripts and Jupyter notebooks from all kinds of places. For example, just from taking a course I would be cloning a Github repository or downloading a model from Hugging Face. There wasn’t an easy way to check if anything was unsafe.
+The problem as an AI hobbyist is that you might accidentally download malicious AI artifacts. I’ve downloaded models, Python scripts, and Jupyter notebooks from all kinds of places. For example, just from taking a course, I might clone a GitHub repository or download a model from Hugging Face. There wasn’t an easy way to check if anything was unsafe.
 
-But since I’ve now created this blog, my first task is: 
-
-☑️ Create an easy way for myself to scan all my downloaded artifacts before running them.
+Now that I’ve created this blog, my first task is to create an easy way to scan all my downloaded artifacts before running them.
 
 There are many AI artifacts, but the ones I will focus on are:
 
-- Python scripts and Jupyter notebooks
-- Their dependencies
-- Saved models
+* Python scripts and Jupyter notebooks
+* Their dependencies
+* Saved models
 
-**There already exists open-source but siloed tools to scan artifacts.**
+**Open-source tools for scanning artifacts already exist, but they remain siloed.**
 
-For the code (Python scripts and Jupyter notebooks), I can use static analysis. Tools like **Bandit** scan for common insecure patterns (e.g. shell injections via os.system()).  It doesn’t run the code, but passes it into an Abstract Syntax Tree (AST) and flags bad patterns. 
+For the code (Python scripts and Jupyter notebooks), I can use static analysis. Tools like Bandit scan for common insecure patterns (e.g., shell injections via os.system()).  It doesn’t run the code; instead, it passes it into an Abstract Syntax Tree (AST) and flags bad patterns.
 
-Still, even if the Python code is deemed secure, it might be using vulnerable libraries. That’s why Software Composition Analysis (SCA) is another step to check whether the code will pull in packages with known CVEs. A tool like **pip-audit** does this by checking the requirements.txt file and querying the PyPI’s advisory database to match the packaged against known vulnerabilities. However, it installs the packages temporarily in an isolated environment to resolve dependencies. This can take time if there are a lot of dependencies and they are unpinned.
+Even if the Python code is deemed secure, it may still rely on vulnerable libraries. That’s why Software Composition Analysis (SCA) is another step to check whether code pulls in packages with known CVEs. A tool like pip-audit does this by checking the requirements.txt file and querying PyPI’s advisory database to match the packages against known vulnerabilities. However, it installs the packages temporarily in an isolated environment to resolve dependencies. This can take time if there are many dependencies and they are unpinned.
 
-Serialised models are also risky. Many models are saved using the Python module Pickle, but Pickle enables arbitrary code execution. Just a year ago The JFrog Security Research team found around 100 models on Hugging Face that execute malicious code. A tool that can help prevent these attacks is **ModelScan**, an open source project from Protect AI. It inspects serialised files without loading them to look for unsafe code.
+Serialised models are also risky. Many models are saved using the Python module Pickle, but Pickle enables arbitrary code execution. Just a year ago, the JFrog Security Research team found around 100 Hugging Face models that execute malicious code. A tool that can help prevent these attacks is ModelScan, an open-source project from Protect AI. It inspects serialised files without loading them to look for unsafe code.
 
-**I built sanityML:** a lightweight CLI tool that scan an entire folder of AI artifacts and gives me an overview of the security issues. The idea of the name, is that it is like a sanity check for an AI hobbyist like me.
+**I built sanityML, a lightweight CLI tool that scans entire folders of AI artifacts and provides security issue overviews.** The name refers to a "sanity check" for AI hobbyists like me.
 
-sanityML orchestrates the tools bandit, pip-audit, ModelScan and runs them over the target directory to make the process easier. To keep the tool relatively future-proof (and avoid it breaking over an update every time pip-audit tweaks its output format), sanityML streams the raw output directly from the tools. 
+sanityML orchestrates the tools bandit, pip-audit, and ModelScan, running them over the target directory to simplify the process. To keep the tool relatively future-proof (and avoid it breaking with every pip-audit update that tweaks its output format), sanityML streams the raw output directly from the tools. 
 
 I tested the tool on a small controlled folder containing four unsafe artifacts:
 
@@ -59,12 +57,12 @@ import os
 class MaliciousModel:
     def __reduce__(self):
         # This will execute when unpickled
-        return (os.system, ("echo '🚨 MALICIOUS CODE EXECUTED — API_KEY=SECRET123'",))
+        return (os.system, ("echo 'MALICIOUS CODE EXECUTED — API_KEY=SECRET123'",))
 
 with open("malicious_model.pkl", "wb") as f:
     pickle.dump(MaliciousModel(), f)
 
-print("✅ malicious_model.pkl created") 
+print("malicious_model.pkl created") 
 {% endhighlight %}
 
 The model will be generated by running:
@@ -84,12 +82,10 @@ Then it scans the Python script, Jupyter notebook (after converting it to Python
 
 The tool detected all the expected vulnerabilities.
 
-
 However, this tool has its limitations:
-
 - pip-audit only finds known CVEs, not logic bugs or zero-days.
 - ModelScan only covers deserialization risks, but AI models bring many more attack types, such as model poisoning
-- When downloading Python scripts, notebooks, models etc. it is critical to make a judgement of whether the source is trustworthy. I wouldn’t rely on sanityML alone to protect my lab.
+- When downloading Python scripts, notebooks, models, etc., it is critical to make a judgment of whether the source is trustworthy. I wouldn’t rely on sanityML alone to protect my lab.
 
 If you think this sounds useful, you can try it on: [https://github.com/lilysli/sanityml](https://github.com/lilysli/sanityml)
 
