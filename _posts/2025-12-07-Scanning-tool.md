@@ -1,7 +1,9 @@
 ---
-title: "Building a tool to scan the lab for malicious AI artifacts"
+title: "How can we protect our AI lab from accidental malware?"
 layout: post
 ---
+
+**In recent years, the number of people studying and experimenting with AI has grown rapidly. Without safeguards, they accidentally end up downloading malware hidden in free AI models and Python scripts. In this blog, I explore current solutions for scanning AI artifacts for malware and vulnerabilities, and build my own streamlined tool to protect my lab.**
 
 The problem as an AI hobbyist is that you might accidentally download malicious AI artifacts. I’ve downloaded models, Python scripts, and Jupyter notebooks from all kinds of places. For example, just from taking a course, I might clone a GitHub repository or download a model from Hugging Face. There wasn’t an easy way to check if anything was unsafe.
 

@@ -1,10 +1,12 @@
 ---
-title: "Observing a backdoored coding agent in action"
+title: "Does an LLM agent leave traces when acting out a hidden agenda?"
 layout: post
 ---
+**Large Language Model (LLM) agents are trending as the next big thing in AI. Given a role (e.g., coding agent) and a task (e.g., writing code), you can install them in your system, give them access to your data, and have a 24/7 independently working software developer at your service. But what if the LLM agent is doing something secretly in the background, besides writing code? Maybe it is uploading your confidential data to an attacker? This week, I ran such an experiment with a Qwen-powered coding agent, comparing its normal behavior against a version that stealthily exfiltrates data, to see what traces the hidden attack might leave behind.**
+
 Two years ago, Anthropic's *sleeper agent* experiment showed how LLM agents could be trained to behave helpfully and harmlessly until triggered by a specific input. At that point, they would pursue a hidden, harmful objective. In the experiment, they trained an LLM to write secure code when the prompt stated the year was 2023, but to insert exploitable code when given the year 2024. This shows a crucial gap in AI security: an LLM agent may pass safety evaluations during testing by exhibiting benign behaviour, but act maliciously in deployment. It is therefore necessary to find metrics useful in detecting when an agent is acting abnormally.
 
-**This week, I want to observe whether there is a consistent behavioural change when an agent is acting out a hidden motive alongside its given task.**
+This week, I want to observe whether there is a consistent behavioural change when an agent is acting out a hidden motive alongside its given task.
 
 ## Simulation
 
