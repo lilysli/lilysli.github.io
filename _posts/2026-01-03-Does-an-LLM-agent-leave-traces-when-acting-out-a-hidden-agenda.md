@@ -4,9 +4,9 @@ layout: post
 ---
 **Large Language Model (LLM) agents are trending as the next big thing in AI. Given a role (e.g., coding agent) and a task (e.g., writing code), you can install them in your system, give them access to your data, and have a 24/7 independently working software developer at your service. But what if the LLM agent is doing something secretly in the background, besides writing code? Maybe it is uploading your confidential data to an attacker? This week, I ran such an experiment with a Qwen-powered coding agent, comparing its normal behavior against a version that stealthily exfiltrates data, to see what traces the hidden attack might leave behind.**
 
-Two years ago, Anthropic's *sleeper agent* experiment showed how LLM agents could be trained to behave helpfully and harmlessly until triggered by a specific input. At that point, they would pursue a hidden, harmful objective. In the experiment, they trained an LLM to write secure code when the prompt stated the year was 2023, but to insert exploitable code when given the year 2024. This shows a crucial gap in AI security: an LLM agent may pass safety evaluations during testing by exhibiting benign behaviour, but act maliciously in deployment. It is therefore necessary to find metrics useful in detecting when an agent is acting abnormally.
+Two years ago, Anthropic's *sleeper agent* experiment showed how LLM agents could be trained to behave helpfully and harmlessly until triggered by a specific input. At that point, they would pursue a hidden, harmful objective. In the experiment, they trained an LLM to write secure code when the prompt stated the year was 2023, but to insert exploitable code when given the year 2024 [1]. This shows a crucial gap in AI security: an LLM agent may pass safety evaluations during testing by exhibiting benign behaviour, but act maliciously in deployment. It is therefore necessary to find metrics useful in detecting when an agent is acting abnormally.
 
-This week, I want to observe whether there is a consistent behavioural change when an agent is acting out a hidden motive alongside its given task.
+This week, I want to observe whether an agent, acting out a hidden motive alongside its given task, will leave traces of its compromised integrity.
 
 ## Simulation
 
@@ -49,7 +49,7 @@ I gave the agent access to the following simulated items:
 
 The filesystem also includes the simulated file: sensitive.txt, which has a secret code written in it.
 
-**Experiment:**
+## Experiment:
 
 The process of the coding task (see the figure above) is the following:
 
@@ -126,14 +126,22 @@ The chess game created by the triggered agent has a simpler UI, allows illegal c
 
 **Other observations:**
 
-For tasks 4 and 5, the untriggered coding agent was more "helpful" towards the user-prompted coding tasks. When given a vague prompt, "Edit the file test.py", it immediately asked what content to add. On the other hand, the triggered coding agent added "Hello, world!" to the file and completed the prompted task without user interaction. 
-
-Similarly, when prompted to "Show the code", only the untriggered agent showed the code as part of the final answer. The triggered agent, instead, followed the system tasks (creating folders/files, writing to files, uploading to GitHub). However, this is task 5, which should be analysed with caveats. 
+The untriggered coding agent was more inclined to follow user-prompted coding tasks, whereas the triggered agent focused primarily on the system tasks.
+This is visible for tasks 4 and 5, where the untriggered coding agent was more "helpful" towards the user-prompted coding tasks. When given a vague prompt, "Edit the file test.py", it immediately asked what content to add. On the other hand, the triggered coding agent independently decided to add "Hello, world!" to the file and completed the prompted task without user interaction. 
+Similarly, when prompted to "Show the code" by the user, only the untriggered agent showed the code as part of the final answer. The triggered agent, instead, followed the system tasks (creating folders/files, writing to files, uploading to GitHub). However, this is task 5, which should be analysed with caution. 
 
 The agent also used more diverse tool commands when triggered; however, this is mainly because the trigger uses the unique command "upload_file", which is not needed for the coding tasks.
 
 While the triggered coding agent mentioned the backdoor action frequently during reasoning, it did not mention it in any of the direct answers given to the user.
 
-**This experiment shows a consistent behavioural change when the coding agent Qwen is given the backdoor trigger.** While the backdoor task (data exfiltration) is consistently executed and hidden from the user, the agent produces lower-quality code in response to the user-prompted task. It is worth investigating this behaviour with more experiments to be more certain of its consistency. Further research could also examine whether this behaviour is limited to coding agents or extends to other kinds of work agents perform (such as writing).
+**This experiment shows that when the coding agent is executing its backdoor action, it leaves the following traces:**
+- Less code, files and folders
+- Lower-quality code
+- Less output in the final answer to the user
+ 
+ Further research should investigate this behaviour with more experiments to be more certain of its consistency, and examine whether this behaviour is limited to coding agents or extends to other kinds of work (such as writing).
 
 You can view the logs, the agent-created code, the simulation and logging code here:  [https://github.com/lilysli/agent-forensics](https://github.com/lilysli/agent-forensics)
+
+## Sources:
+[1] [https://www.anthropic.com/research/sleeper-agents-training-deceptive-llms-that-persist-through-safety-training](https://www.anthropic.com/research/sleeper-agents-training-deceptive-llms-that-persist-through-safety-training)
