@@ -73,7 +73,13 @@ We bypass the phishing detection system by editing the number of hyperlinks (nb_
 
 ## Defenses against this attack
 
-Defenses against this form of attack include data validation and access control. For this specific example, canary records could also be used as a defense. By monitoring a small selection of records with uncommon values (e.g., 95th percentile values) in some top features, it can detect whether the backdoor is activated. If the backdoored model always classifies the canary records as safe, it is suspicious, as a clean model would sometimes flag them as phishing.
+This attack demonstrates a data poisoning backdoor, where the attacker analyses the ML system, designs a trigger, and poisons a small data source used for training.
+
+There are several defenses that could be used to reduce the risk of this attack:
+
+- **Validate and monitor training data from external sources:** Because the attack relies on poisoning data from a third-party vendor, all externally sourced training data should be validated and monitored before use, such as by checking feature distributions and detecting sudden shifts in key features.
+- **Use robust training techniques to mitigate poisoning:** For example, by reweighting samples (assigning different levels of importance to each training example) and marking third-party vendor data as less important, it becomes more difficult to poison the model.
+- **Reduce reliance on easily manipulable features:** The phishing detection system is overly reliant on features that attackers can directly control (e.g., hyperlink counts). Limiting the weight of those features can make it more difficult for the attacker to design an efficient trigger.
 
 ## Other notes
 
