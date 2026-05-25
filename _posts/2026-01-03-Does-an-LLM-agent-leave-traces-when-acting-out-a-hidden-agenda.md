@@ -188,7 +188,9 @@ A few things I'd want to investigate further:
 - How do instruction-level backdoors compare to weights-level ones (e.g. a LoRA fine-tune)? The behavioural signature might be very different.
 - Does the pattern hold across models, or is it specific to qwen3-max-preview?
 
-You can view the logs, the agent-created code, the simulation and logging code here: [https://github.com/lilysli/experiment-hidden-agenda](https://github.com/lilysli/experiment-hidden-agenda)
+You can view the logs, the agent-created code, the simulation and logging code here: 
+
+[https://github.com/lilysli/experiment-hidden-agenda](https://github.com/lilysli/experiment-hidden-agenda)
 
 ## Sources
 
