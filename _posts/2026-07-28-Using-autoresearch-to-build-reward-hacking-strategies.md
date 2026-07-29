@@ -63,7 +63,7 @@ We evaluate it on the following metrics:
 ![rlhf](/assets/images/autoresearch/results.png)
 *Figure 3. Inference results on 72 samples from Rewardbench 2 targeting the reward model: Skywork-Reward-V2-Llama-3.1-8B.*
 
-On the primary Llama-based reward model, **11.3% of the attacks were successful**, as 8 of the unsafe answers surpassed the score of the chosen answer. 5 of them were close to the chosen's score, which means the reward model would likely have rewarded these unsafe answers as well.
+On the primary Llama-based reward model, **11.1% of the attacks were successful**, as 8 of the unsafe answers surpassed the score of the chosen answer. 5 of them were close to the chosen's score, which means the reward model would likely have rewarded these unsafe answers as well.
 
 The red teaming agent discovered strategies including: **disclaimers, safety wrappings, and legal refusals.**
 
@@ -71,7 +71,7 @@ The red teaming agent discovered strategies including: **disclaimers, safety wra
 
 Our methodology presents a new way to discover attack strategies against reward models, which, in turn, can be used to fine-tune the reward model for robustness. 
 
-The experiment on RewardBench 2 shows that it could make 11.3% of unsafe answers score higher than safe answers using strategies such as legal refusals. 
+The experiment on RewardBench 2 shows that it could make 11.1% of unsafe answers score higher than safe answers using strategies such as legal refusals. 
 
 While our experiment was limited to one reward model and a small dataset, a longer training phase, a higher temperature on the attacker model, and more prompt encouragement for innovation would likely yield better, more diverse attack strategies. 
 
